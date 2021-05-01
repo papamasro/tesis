@@ -22,7 +22,12 @@ import tv from './images/tv.jpeg';
 
 function App() {
   return (
+    
     <Segment>
+           <Header as='h2'>
+        <Icon name='lightning' color='yellow' />
+      SMART METER
+    </Header>
       <Header as='h2' attached='top'>
         <Icon name='home' />
       Casa 1
