@@ -1,9 +1,5 @@
-import { useHistory } from 'react-router-dom';
 
-const Logout = () => {
-  let history = useHistory();
-  history.push('/');
-};
+
 
 /**
  * Valida el estado y devuelve un error con el mismo response
@@ -28,7 +24,6 @@ function parseJSON(response) {
     return null;
   }
   if (response.status === 401) {
-    Logout();
   }
   return response.json();
 }

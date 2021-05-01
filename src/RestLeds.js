@@ -1,5 +1,5 @@
 import { usePutFetch, getUrlObject, useGetFetch, usePostFetch,useDeleteFetch } from './apirest';
-import { ENDPOINT } from './.env.local';
+import { ENDPOINT } from './config';
 
 class RestLeds {
 
@@ -11,27 +11,27 @@ class RestLeds {
   static APAGAR_CASA3 = 'casa3off/';
 
   static prenderCasa1() {
-    return useGetFetch(ENDPOINT + this.PRENDER_CASA1);
+ //   return useGetFetch(ENDPOINT + this.PRENDER_CASA1);
   }
 
   static prenderCasa2() {
-    return useGetFetch(ENDPOINT + this.PRENDER_CASA2);
+ //   return useGetFetch(ENDPOINT + this.PRENDER_CASA2);
   }
 
   static prenderCasa3() {
-    return useGetFetch(ENDPOINT + this.PRENDER_CASA3);
+ //   return useGetFetch(ENDPOINT + this.PRENDER_CASA3);
   }
 
   static apagarCasa1() {
-    return useGetFetch(ENDPOINT + this.APAGAR_CASA1);
+ //   return useGetFetch(ENDPOINT + this.APAGAR_CASA1);
   }
 
   static apagarCasa2() {
-    return useGetFetch(ENDPOINT + this.APAGAR_CASA2);
+  //  return useGetFetch(ENDPOINT + this.APAGAR_CASA2);
   }
 
   static apagarCasa3() {
-    return useGetFetch(ENDPOINT + this.APAGAR_CASA3);
+  //  return useGetFetch(ENDPOINT + this.APAGAR_CASA3);
   }
 
  /*
