@@ -19,6 +19,44 @@ import pileta from './images/pileta.jpeg';
 
 import tv from './images/tv.jpeg';
 
+import RestLeds from './restapi';
+
+
+prenderCasa1 = () => {
+  RestLeds.prenderCasa1().then(json => {
+    console.log("se encendio casa 1")
+  });
+};
+
+prenderCasa2 = () => {
+  RestLeds.prenderCasa2().then(json => {
+    console.log("se encendio casa 1")
+  });
+};
+
+prenderCasa3 = () => {
+  RestLeds.prenderCasa3().then(json => {
+    console.log("se encendio casa 1")
+  });
+};
+
+apagarCasa1 = () => {
+  RestLeds.apagarCasa1().then(json => {
+    console.log("se encendio casa 1")
+  });
+};
+
+apagarCasa2 = () => {
+  RestLeds.apagarCasa2().then(json => {
+    console.log("se encendio casa 1")
+  });
+};
+
+apagarCasa3 = () => {
+  RestLeds.apagarCasa3().then(json => {
+    console.log("se encendio casa 1")
+  });
+};
 
 function App() {
   return (

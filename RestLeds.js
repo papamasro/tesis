@@ -27,13 +27,13 @@ class RestLeds {
   }
 
   static apagarCasa2() {
-    return useGetFetch(ENDPOINT + this.APAGAR_CASA1);
+    return useGetFetch(ENDPOINT + this.APAGAR_CASA2);
   }
 
   static apagarCasa3() {
-    return useGetFetch(ENDPOINT + this.APAGAR_CASA1);
+    return useGetFetch(ENDPOINT + this.APAGAR_CASA3);
   }
-  
+
  /*
   static createConcepto(data) {
     return usePostFetch(ENDPOINT + this.CONCEPTOS_URL, data);
