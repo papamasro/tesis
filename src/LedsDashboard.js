@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react'
-import { Button, Card, Image, Segment, Radio, Icon, Header } from 'semantic-ui-react'
+import { Button, Card, Image, Segment, Grid, Icon, Header,Radio } from 'semantic-ui-react'
 
 
 import aire from './images/aire.jpeg';
@@ -27,11 +27,27 @@ class LedsDashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      checked: false,
+      isTransferred: false,
+      energy:0
     };
-    this.prenderCasa1 = this.prenderCasa1.bind(this);
-
+    this.prenderCasa1 = this.prenderCasa1.bind(this)
+    this.handleFilterChanged = this.handleFilterChanged.bind(this)
   }
+
+  handleFilterChanged() {
+    this.setState(prevState => ({ //ensure correct previous state when async call is batched
+      checked: !prevState.checked
+    }));
+    this.props.onClick && this.props.onClick(); //only execute if exists
+    console.log("eee")
+    }
+
+  handleFilterChangedeee = () => {
+    const { actions } = this.props;
+    this.setState({isTransferred:true})
+      console.log("se encendio casa 1")
+  };
 
   prenderCasa1 = () => {
     RestLeds.prenderCasa1().then(json => {
@@ -70,9 +86,8 @@ class LedsDashboard extends React.Component {
   };
 
   render() {
-
+    var isTransferred = false
     return (
-
       <Segment>
         <Header as='h2'>
           <Icon name='lightning' color='yellow' />
@@ -95,8 +110,8 @@ class LedsDashboard extends React.Component {
                 <Card.Meta>Consumo: 95 Wh</Card.Meta>
               </Card.Content>
               <Card.Content extra>
-                <Button negative onClick={() => this.apagarCasa1()} attached='left'><Icon name='power off' size="large" color="white" /></Button>
-                <Button positive onClick={() => this.prenderCasa1()} attached='right'><Icon name='plug'size="large" color="white" /></Button>
+                <Button  negative onClick={() => this.apagarCasa1()} attached='left'><Icon name='power off' size="large" color="white" /></Button>
+                <Button  positive onClick={() => this.prenderCasa1()} attached='right'><Icon name='lightning'size="large" color="white" /></Button>
               </Card.Content>
             </Card>
             <Card>
@@ -110,8 +125,22 @@ class LedsDashboard extends React.Component {
                 <Card.Meta>Consumo: 1048 Wh</Card.Meta>
               </Card.Content>
               <Card.Content extra>
-                <Button negative onClick={() => this.apagarCasa1()} attached='left'><Icon name='power off' size="large" color="white" /></Button>
-                <Button positive onClick={() => this.prenderCasa1()} attached='right'><Icon name='plug'size="large" color="white" /></Button>
+      
+    <Icon name='power off'size="large" color="red" />
+
+    <Radio toggle 
+               id="isTransferred"
+               key="isTransferred"
+               name="isTransferred"
+               onClick={this.handleFilterChanged} 
+               checked={this.state.checked}
+               value={isTransferred}
+            />
+
+    <Icon name='lightning'size="large" color="green" />
+ 
+ 
+
               </Card.Content>
             </Card>
             <Card>
@@ -126,7 +155,7 @@ class LedsDashboard extends React.Component {
               </Card.Content>
               <Card.Content extra>
               <Button negative onClick={() => this.apagarCasa1()} attached='left'><Icon name='power off' size="large" color="white" /></Button>
-                <Button positive onClick={() => this.prenderCasa1()} attached='right'><Icon name='plug'size="large" color="white" /></Button>
+                <Button positive onClick={() => this.prenderCasa1()} attached='right'><Icon name='lightning'size="large" color="white" /></Button>
               </Card.Content>
             </Card>
             <Card>
@@ -160,7 +189,7 @@ class LedsDashboard extends React.Component {
               </Card.Content>
               <Card.Content extra>
               <Button negative onClick={() => this.apagarCasa2()} attached='left'><Icon name='power off' size="large" color="white" /></Button>
-                <Button positive onClick={() => this.prenderCasa2()} attached='right'><Icon name='plug'size="large" color="white" /></Button>
+                <Button positive onClick={() => this.prenderCasa2()} attached='right'><Icon name='lightning'size="large" color="white" /></Button>
               </Card.Content>
             </Card>
             <Card>
@@ -175,7 +204,7 @@ class LedsDashboard extends React.Component {
               </Card.Content>
               <Card.Content extra>
               <Button negative onClick={() => this.apagarCasa2()} attached='left'><Icon name='power off' size="large" color="white" /></Button>
-                <Button positive onClick={() => this.prenderCasa2()} attached='right'><Icon name='plug'size="large" color="white" /></Button>
+                <Button positive onClick={() => this.prenderCasa2()} attached='right'><Icon name='lightning'size="large" color="white" /></Button>
               </Card.Content>
             </Card>
             <Card>
@@ -190,7 +219,7 @@ class LedsDashboard extends React.Component {
               </Card.Content>
               <Card.Content extra>
               <Button negative onClick={() => this.apagarCasa2()} attached='left'><Icon name='power off' size="large" color="white" /></Button>
-                <Button positive onClick={() => this.prenderCasa2()} attached='right'><Icon name='plug'size="large" color="white" /></Button>
+                <Button positive onClick={() => this.prenderCasa2()} attached='right'><Icon name='lightning'size="large" color="white" /></Button>
               </Card.Content>
             </Card>
             <Card>
@@ -223,7 +252,7 @@ class LedsDashboard extends React.Component {
               </Card.Content>
               <Card.Content extra>
               <Button negative onClick={() => this.apagarCasa3()} attached='left'><Icon name='power off' size="large" color="white" /></Button>
-                <Button positive onClick={() => this.prenderCasa3()} attached='right'><Icon name='plug'size="large" color="white" /></Button>
+                <Button positive onClick={() => this.prenderCasa3()} attached='right'><Icon name='lightning'size="large" color="white" /></Button>
               </Card.Content>
             </Card>
             <Card>
@@ -238,7 +267,7 @@ class LedsDashboard extends React.Component {
               </Card.Content>
               <Card.Content extra>
               <Button negative onClick={() => this.apagarCasa3()} attached='left'><Icon name='power off' size="large" color="white" /></Button>
-                <Button positive onClick={() => this.prenderCasa3()} attached='right'><Icon name='plug'size="large" color="white" /></Button>
+                <Button positive onClick={() => this.prenderCasa3()} attached='right'><Icon name='lightning'size="large" color="white" /></Button>
               </Card.Content>
             </Card>
             <Card>
@@ -253,7 +282,7 @@ class LedsDashboard extends React.Component {
               </Card.Content>
               <Card.Content extra>
               <Button negative onClick={() => this.apagarCasa3()} attached='left'><Icon name='power off' size="large" color="white" /></Button>
-                <Button positive onClick={() => this.prenderCasa3()} attached='right'><Icon name='plug'size="large" color="white" /></Button>
+                <Button positive onClick={() => this.prenderCasa3()} attached='right'><Icon name='lightning'size="large" color="white" /></Button>
               </Card.Content>
             </Card>
             <Card>

@@ -1,13 +1,12 @@
 const axios = require('axios');
 
 class RestLeds {
-
-  static PRENDER_CASA1 = 'casa1On';
-  static PRENDER_CASA2 = 'casa2On';
-  static PRENDER_CASA3 = 'casa3On';
-  static APAGAR_CASA1 = 'casa1Off';
-  static APAGAR_CASA2 = 'casa2Off';
-  static APAGAR_CASA3 = 'casa3Off';
+  static PRENDER_CASA1 = 'number/2';
+  static PRENDER_CASA2 = 'number/5';
+  static PRENDER_CASA3 = 'number/8';
+  static APAGAR_CASA1 = 'number/1';
+  static APAGAR_CASA2 = 'number/4';
+  static APAGAR_CASA3 = 'number/7';
   static ENDPOINT = 'http://192.168.0.135:5000/';
 
   static prenderCasa1() {
