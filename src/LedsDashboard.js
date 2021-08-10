@@ -89,21 +89,10 @@ class LedsDashboard extends React.Component {
             consume="1048"
             name="Aire"
             />
-            <Card>
-              <Card.Content>
-                <Image
-                  floated='right'
-                  size='tiny'
-                  src={compu}
-                />
-                <Card.Header>PC</Card.Header>
-                <Card.Meta>Consumo: 650 Wh</Card.Meta>
-              </Card.Content>
-              <Card.Content extra>
-                <Button negative onClick={() => this.apagarCasa1()} attached='left'><Icon name='power off' size="large" color="white" /></Button>
-                <Button positive onClick={() => this.prenderCasa1()} attached='right'><Icon name='lightning' size="large" color="white" /></Button>
-              </Card.Content>
-            </Card>
+               <Elements image={compu}
+            consume="750"
+            name="PC"
+            />
             <Card>
               <Card.Content>
                 <Image
