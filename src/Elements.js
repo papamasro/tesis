@@ -8,54 +8,58 @@ class Elements extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isTransferred: false,
-      energy1: 0,
-      checked:false
+      checked: false
     };
-    this.handleFilterChanged = this.handleFilterChanged.bind(this)
   }
 
-  handleFilterChanged() {
+  handleFilterChanged = (event) => {
     this.setState(prevState => ({ //ensure correct previous state when async call is batched
       checked: !prevState.checked
     }));
     this.props.onClick && this.props.onClick(); //only execute if exists
-    RestLeds.prenderCasa1().then(json => {
-      console.log("se encendio casa 1")
-    });
+    console.log(event.target)
+    this.props.parentCallback(!this.state.checked,event.target);
+          
   }
+  
 
   render() {
-    const {image,consume,name} = this.props;
-
-    var isTransferred = false
+    const { image, consume, name,num } = this.props;
     return (
-        <Card>
-          <Card.Content>
-            <Image
-              floated='right'
-              size='tiny'
-              src={image}
-            />
-            <Card.Header>{name}</Card.Header>
-            <Card.Meta>Consumo: {consume} Wh</Card.Meta>
-          </Card.Content>
-          <Card.Content extra>
-            <Icon name='power off' size="large" color="red" />
+      <Card>
+        <Card.Content>
+          <Image
+            floated='right'
+            size='tiny'
+            src={image}
+          />
+          <Card.Header>{name}</Card.Header>
+          <Card.Meta>Consumo: {consume} Wh</Card.Meta>
+        </Card.Content>
+        <Card.Content extra>
+        <Grid>
+        <Grid.Column>
+          <Icon name='power off' size="large" color="red" />
+          </Grid.Column>
+          <Grid.Column>
 
-            <Radio toggle
-              id="isTransferred"
-              key="isTransferred"
-              name="isTransferred"
-              onClick={this.handleFilterChanged}
-              checked={this.state.checked}
-              value={isTransferred}
-            />
-            <Icon name='lightning' size="large" color="green" />
-          </Card.Content>
-        </Card>
+          <Radio toggle
+            id={consume}
+            key={name}
+            name={name}
+            value={num}
+            onClick={this.handleFilterChanged}
+            checked={this.state.checked}
+          />
+          </Grid.Column>
+          <Grid.Column>
+          <Icon name='lightning' size="large" color="green" />
+          </Grid.Column>
+          </Grid>
+        </Card.Content>
+      </Card>
     );
   }
-} 
+}
 
-  export default Elements;
+export default Elements;

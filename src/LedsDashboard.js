@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react'
-import { Button, Card, Image, Segment, Grid, Icon, Header, Radio } from 'semantic-ui-react'
+import { Button, Card, Image, Segment, Grid, Icon, Header, Radio, Progress } from 'semantic-ui-react'
 import Elements from './Elements';
 
 
@@ -14,61 +14,107 @@ import faroles from './images/faroles.jpeg';
 
 import lava from './images/lavaropas.jpeg';
 
-import heladera from './images/heladera.jpg';
+import pava from './images/pava.jpeg';
 
 import pileta from './images/pileta.jpeg';
 
 import tv from './images/tv.jpeg';
 
-import medidor from './images/medidor.png';
+import aspiradora from './images/aspiradora.jpeg';
 
 import RestLeds from './RestLeds';
+
+const electro = [
+  { image: pava, consume: '2000', name: 'Pava', num: '1' },
+  { key: 'Balvanera', text: 'Balvanera', value: 'Balvanera' },
+  { key: 'Barracas', text: 'Barracas', value: 'Barracas' },
+  { key: 'Belgrano', text: 'Belgrano', value: 'Belgrano' },
+  { key: 'Boca', text: 'Boca', value: 'Boca' },
+  { key: 'Boedo', text: 'Boedo', value: 'Boedo' },
+  { key: 'Caballito', text: 'Caballito', value: 'Caballito' },
+  { key: 'Chacarita', text: 'Chacarita', value: 'Chacarita' }
+]
 
 class LedsDashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isTransferred: false,
+      percent: 33,
       energy1: 0,
+      energy1Tot: 0,
       energy2: 0,
+      energy2Tot: 0,
       energy3: 0,
-      energyTot: 0
+      energy3Tot: 0,
+      energyTot: 0,
+      name: "",
     };
-    //this.handleFilterChangedOne = this.handleFilterChangedOne.bind(this)
   }
 
-  prenderCasa2 = () => {
-    RestLeds.prenderCasa2().then(json => {
-      console.log("se encendio casa 1")
-    });
-  };
 
-  prenderCasa3 = () => {
-    RestLeds.prenderCasa3().then(json => {
-      console.log("se encendio casa 3")
+  handleCallback = (status, event) => {
+    //  this.setState({name: childData})
+    console.log(status)
+    console.log(event.value)
+    console.log(event.id)
+    console.log(event.name)
+    let estado = status
+    let nrocasa = event.value
+    let consumo = event.id
+    let electro = event.name
+    let consumeTot = 0
+    if (estado === true) {
+      consumeTot = this.state.energyTot + parseInt(consumo)
+      this.setState({ energyTot: consumeTot })
+      if (nrocasa === "1") {
+        let consume = this.state.energy1 + parseInt(consumo)
+        let consumeCant = this.state.energy1Tot + 1
+        this.setState({ energy1: consume, energy1Tot: consumeCant })
+      }
+      if (nrocasa === "2") {
+        let consume = this.state.energy2 + parseInt(consumo)
+        let consumeCant = this.state.energy2Tot + 1
+        this.setState({ energy2: consume, energy2Tot: consumeCant })
+      }
+      if (nrocasa === "3") {
+        let consume = this.state.energy3 + parseInt(consumo)
+        let consumeCant = this.state.energy3Tot + 1
+        this.setState({ energy3: consume, energy3Tot: consumeCant })
+      }
+    } else {
+      consumeTot = this.state.energyTot - parseInt(consumo)
+      this.setState({ energyTot: consumeTot })
+      if (nrocasa === "1") {
+        let consume = this.state.energy1 - parseInt(consumo)
+        let consumeCant = this.state.energy1Tot - 1
+        this.setState({ energy1: consume, energy1Tot: consumeCant })
+      }
+      if (nrocasa === "2") {
+        let consume = this.state.energy2 - parseInt(consumo)
+        let consumeCant = this.state.energy2Tot - 1
+        this.setState({ energy2: consume, energy2Tot: consumeCant })
+      }
+      if (nrocasa === "3") {
+        let consume = this.state.energy3 - parseInt(consumo)
+        let consumeCant = this.state.energy3Tot - 1
+        this.setState({ energy3: consume, energy3Tot: consumeCant })
+      }
+    }
+    console.log(consumeTot)
+    let firstNum = "0"
+    if (consumeTot > 999) {
+      let num = consumeTot.toString()
+      firstNum = num.charAt(0)
+    }
+    console.log(firstNum)
+    RestLeds.raspberry(firstNum).then(json => {
+      console.log("Se envio a la raspbery" + firstNum)
     });
-  };
+  }
 
-  apagarCasa1 = () => {
-    RestLeds.apagarCasa1().then(json => {
-      console.log("se encendio casa 1")
-    });
-  };
-
-  apagarCasa2 = () => {
-    RestLeds.apagarCasa2().then(json => {
-      console.log("se encendio casa 1")
-    });
-  };
-
-  apagarCasa3 = () => {
-    RestLeds.apagarCasa3().then(json => {
-      console.log("se encendio casa 1")
-    });
-  };
 
   render() {
-    var isTransferred = false
     return (
       <Segment>
         <Header as='h2'>
@@ -81,27 +127,28 @@ class LedsDashboard extends React.Component {
         </Header>
         <Segment attached color='red' >
           <Card.Group>
-            <Elements image={heladera}
-            consume="95"
-            name="Heladera"
+            <Elements image={pava}
+              consume="2000"
+              name="Pava"
+              num="1"
+              parentCallback={this.handleCallback}
             />
-                 <Elements image={aire}
-            consume="1048"
-            name="Aire"
+            <Elements image={aire}
+              consume="1613"
+              name="Aire"
+              num="1"
+              parentCallback={this.handleCallback}
             />
-               <Elements image={compu}
-            consume="750"
-            name="PC"
+            <Elements image={compu}
+              consume="750"
+              name="PC"
+              num="1"
+              parentCallback={this.handleCallback}
             />
             <Card>
               <Card.Content>
-                <Image
-                  floated='right'
-                  size='large'
-                  src={medidor}
-                />
-                <Card.Header>Consumo total: 3200KW</Card.Header>
-                <Card.Meta>Consumo medio: 300kw</Card.Meta>
+                <Progress value={this.state.energy1Tot} total='3' progress='ratio' color="red" />
+                <Card.Header>Consumo total: {this.state.energy1} Wh</Card.Header>
               </Card.Content>
             </Card>
           </Card.Group>
@@ -112,59 +159,30 @@ class LedsDashboard extends React.Component {
         </Header>
         <Segment attached color='blue' >
           <Card.Group>
+            <Elements image={aspiradora}
+              consume="1200"
+              name="Aspiradora"
+              num="2"
+              parentCallback={this.handleCallback}
+            />
+            <Elements image={lava}
+              consume="875"
+              name="Lavarropas"
+              num="2"
+              parentCallback={this.handleCallback}
+            />
+
+            <Elements image={tv}
+              consume="120"
+              name="Televisor"
+              num="2"
+              parentCallback={this.handleCallback}
+            />
+
             <Card>
               <Card.Content>
-                <Image
-                  floated='right'
-                  size='tiny'
-                  src={heladera}
-                />
-                <Card.Header>Heladera</Card.Header>
-                <Card.Meta>Consumo: 95 Wh</Card.Meta>
-              </Card.Content>
-              <Card.Content extra>
-                <Button negative onClick={() => this.apagarCasa2()} attached='left'><Icon name='power off' size="large" color="white" /></Button>
-                <Button positive onClick={() => this.prenderCasa2()} attached='right'><Icon name='lightning' size="large" color="white" /></Button>
-              </Card.Content>
-            </Card>
-            <Card>
-              <Card.Content>
-                <Image
-                  floated='right'
-                  size='tiny'
-                  src={lava}
-                />
-                <Card.Header>Lavarropas</Card.Header>
-                <Card.Meta>Consumo: 875 Wh</Card.Meta>
-              </Card.Content>
-              <Card.Content extra>
-                <Button negative onClick={() => this.apagarCasa2()} attached='left'><Icon name='power off' size="large" color="white" /></Button>
-                <Button positive onClick={() => this.prenderCasa2()} attached='right'><Icon name='lightning' size="large" color="white" /></Button>
-              </Card.Content>
-            </Card>
-            <Card>
-              <Card.Content>
-                <Image
-                  floated='right'
-                  size='tiny'
-                  src={tv}
-                />
-                <Card.Header>Televisor</Card.Header>
-                <Card.Meta>Consumo: 120Wh</Card.Meta>
-              </Card.Content>
-              <Card.Content extra>
-                <Button negative onClick={() => this.apagarCasa2()} attached='left'><Icon name='power off' size="large" color="white" /></Button>
-                <Button positive onClick={() => this.prenderCasa2()} attached='right'><Icon name='lightning' size="large" color="white" /></Button>
-              </Card.Content>
-            </Card>
-            <Card>
-              <Card.Content>
-                <Image
-                  size='large'
-                  src={medidor}
-                />
-                <Card.Header>Consumo total: 6000KW</Card.Header>
-                <Card.Meta>Consumo medio: 1500kw</Card.Meta>
+                <Progress value={this.state.energy2Tot} total='3' progress='ratio' color="red" />
+                <Card.Header>Consumo total: {this.state.energy2} Wh</Card.Header>
               </Card.Content>
             </Card>
           </Card.Group>
@@ -175,59 +193,30 @@ class LedsDashboard extends React.Component {
         </Header>
         <Segment attached color='green' >
           <Card.Group>
+
+            <Elements image={faroles}
+              consume="1150"
+              name="Iluminacion x 4"
+              num="3"
+              parentCallback={this.handleCallback}
+            />
+            <Elements image={pileta}
+              consume="1140"
+              name="Motor pileta x 2"
+              num="3"
+              parentCallback={this.handleCallback}
+            />
+
+            <Elements image={pasto}
+              consume="1100"
+              name="Cortadoras de pasto x 2"
+              num="3"
+              parentCallback={this.handleCallback}
+            />
             <Card>
               <Card.Content>
-                <Image
-                  floated='right'
-                  size='tiny'
-                  src={faroles}
-                />
-                <Card.Header>Iluminacion</Card.Header>
-                <Card.Meta>Consumo: 150Wh x 20</Card.Meta>
-              </Card.Content>
-              <Card.Content extra>
-                <Button negative onClick={() => this.apagarCasa3()} attached='left'><Icon name='power off' size="large" color="white" /></Button>
-                <Button positive onClick={() => this.prenderCasa3()} attached='right'><Icon name='lightning' size="large" color="white" /></Button>
-              </Card.Content>
-            </Card>
-            <Card>
-              <Card.Content>
-                <Image
-                  floated='right'
-                  size='tiny'
-                  src={pileta}
-                />
-                <Card.Header>Motor pileta</Card.Header>
-                <Card.Meta>Consumo: 570Wh x 2</Card.Meta>
-              </Card.Content>
-              <Card.Content extra>
-                <Button negative onClick={() => this.apagarCasa3()} attached='left'><Icon name='power off' size="large" color="white" /></Button>
-                <Button positive onClick={() => this.prenderCasa3()} attached='right'><Icon name='lightning' size="large" color="white" /></Button>
-              </Card.Content>
-            </Card>
-            <Card>
-              <Card.Content>
-                <Image
-                  floated='right'
-                  size='tiny'
-                  src={pasto}
-                />
-                <Card.Header>Cortadoras de pasto</Card.Header>
-                <Card.Meta>Consumo: 550Wh x 3</Card.Meta>
-              </Card.Content>
-              <Card.Content extra>
-                <Button negative onClick={() => this.apagarCasa3()} attached='left'><Icon name='power off' size="large" color="white" /></Button>
-                <Button positive onClick={() => this.prenderCasa3()} attached='right'><Icon name='lightning' size="large" color="white" /></Button>
-              </Card.Content>
-            </Card>
-            <Card>
-              <Card.Content>
-                <Image
-                  size='large'
-                  src={medidor}
-                />
-                <Card.Header>Consumo total: 5000KW</Card.Header>
-                <Card.Meta>Consumo medio: 1300kw</Card.Meta>
+                <Progress value={this.state.energy3Tot} total='3' progress='ratio' color="red" />
+                <Card.Header>Consumo total: {this.state.energy3} Wh</Card.Header>
               </Card.Content>
             </Card>
           </Card.Group>
