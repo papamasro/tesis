@@ -147,7 +147,7 @@ class LedsDashboard extends React.Component {
             />
             <Card>
               <Card.Content>
-                <Progress value={this.state.energy1Tot} total='3' progress='ratio' color="red" />
+                <Progress indicating size="large" value={this.state.energy1Tot} total='3'  progress='ratio'  />
                 <Card.Header>Consumo total: {this.state.energy1} Wh</Card.Header>
               </Card.Content>
             </Card>
@@ -181,7 +181,7 @@ class LedsDashboard extends React.Component {
 
             <Card>
               <Card.Content>
-                <Progress value={this.state.energy2Tot} total='3' progress='ratio' color="red" />
+                <Progress indicating size="large"  value={this.state.energy2Tot} total='3' progress='ratio'  />
                 <Card.Header>Consumo total: {this.state.energy2} Wh</Card.Header>
               </Card.Content>
             </Card>
@@ -215,7 +215,7 @@ class LedsDashboard extends React.Component {
             />
             <Card>
               <Card.Content>
-                <Progress value={this.state.energy3Tot} total='3' progress='ratio' color="red" />
+                <Progress indicating size="large"  value={this.state.energy3Tot} total='3' progress='ratio' />
                 <Card.Header>Consumo total: {this.state.energy3} Wh</Card.Header>
               </Card.Content>
             </Card>
