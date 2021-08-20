@@ -24,15 +24,19 @@ import aspiradora from './images/aspiradora.jpeg';
 
 import RestLeds from './RestLeds';
 
+
+
+
 const electro = [
-  { image: pava, consume: '2000', name: 'Pava', num: '1' },
-  { key: 'Balvanera', text: 'Balvanera', value: 'Balvanera' },
-  { key: 'Barracas', text: 'Barracas', value: 'Barracas' },
-  { key: 'Belgrano', text: 'Belgrano', value: 'Belgrano' },
-  { key: 'Boca', text: 'Boca', value: 'Boca' },
-  { key: 'Boedo', text: 'Boedo', value: 'Boedo' },
-  { key: 'Caballito', text: 'Caballito', value: 'Caballito' },
-  { key: 'Chacarita', text: 'Chacarita', value: 'Chacarita' }
+ // { id: 'Pava', idSmartMeter: 'Pava', device: '1' ,value:'2000',status:'OFF'},
+ // { id: 'Aire', idSmartMeter: 'Aire', device: '1' ,value:'1613',status:'OFF'},
+  { id: 'PC', idSmartMeter: 'PC', device: '1' ,value:'750',status:'OFF'},
+  { id: 'Aspiradora', idSmartMeter: 'Aspiradora', device: '2' ,value:'1200',status:'OFF'},
+  { id: 'Lavarropas', idSmartMeter: 'Lavarropas', device: '2' ,value:'875',status:'OFF'},
+  { id: 'Televisor', idSmartMeter: 'Televisor', device: '2' ,value:'120',status:'OFF'},
+  { id: 'Iluminacion', idSmartMeter: 'Iluminacion', device: '3' ,value:'1150',status:'OFF'},
+  { id: 'Motor', idSmartMeter: 'Motor', device: '3' ,value:'1140',status:'OFF'},
+  { id: 'Cortadora', idSmartMeter: 'Cortadora', device: '3' ,value:'1100',status:'OFF'}
 ]
 
 class LedsDashboard extends React.Component {
@@ -52,18 +56,33 @@ class LedsDashboard extends React.Component {
     };
   }
 
+  loadAssets = () => {
+    electro.forEach(element => {
+      RestLeds.postConsumeAsset(element);
+    });
+  }
 
   handleCallback = (status, event) => {
-    //  this.setState({name: childData})
-    console.log(status)
-    console.log(event.value)
-    console.log(event.id)
-    console.log(event.name)
     let estado = status
     let nrocasa = event.value
     let consumo = event.id
     let electro = event.name
     let consumeTot = 0
+    let onOff
+
+    if(estado)
+      onOff = "ON"
+    else
+      onOff = "OFF"
+    
+    if(nrocasa === "3"){
+     var divisiones = electro.split(" ", 1);
+     electro = divisiones[0]
+    }
+
+    let con = "net.biz.smartMeterNetwork.Consume#" + electro
+    RestLeds.postBlockchainTransaction(con,onOff);
+
     if (estado === true) {
       consumeTot = this.state.energyTot + parseInt(consumo)
       this.setState({ energyTot: consumeTot })
@@ -209,7 +228,7 @@ class LedsDashboard extends React.Component {
 
             <Elements image={pasto}
               consume="1100"
-              name="Cortadoras de pasto x 2"
+              name="Cortadora de pasto x 2"
               num="3"
               parentCallback={this.handleCallback}
             />
@@ -221,6 +240,7 @@ class LedsDashboard extends React.Component {
             </Card>
           </Card.Group>
         </Segment>
+        <Button  onClick={this.loadAssets} positive>Cargar BD</Button>
       </Segment>
     );
   }
