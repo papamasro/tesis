@@ -30,13 +30,13 @@ class RestLeds {
     });
   }
 
-  static postBlockchainTransaction(consumo,state) {
+  static postBlockchainTransaction(consumo,state,date) {
     console.log(consumo,state, "eee")
     axios({
       method: 'post',
       url: this.ENDPOINT_BLOCKCHAIN + this.GRABAR_BLOCKCHAIN ,
       headers: {}, 
-      data: {consume:consumo, estado:state}
+      data: {consume:consumo, estado:state,date:date}
     });
   }
 

@@ -24,19 +24,36 @@ import aspiradora from './images/aspiradora.jpeg';
 
 import RestLeds from './RestLeds';
 
-
-
+const timeElapsed = Date.now();
+const today = new Date(timeElapsed);
+const todayYearAgo = today.setMonth(today.getMonth() - 12);
+const isoDay = todayYearAgo.toISOString();
 
 const electro = [
- // { id: 'Pava', idSmartMeter: 'Pava', device: '1' ,value:'2000',status:'OFF'},
- // { id: 'Aire', idSmartMeter: 'Aire', device: '1' ,value:'1613',status:'OFF'},
-  { id: 'PC', idSmartMeter: 'PC', device: '1' ,value:'750',status:'OFF'},
-  { id: 'Aspiradora', idSmartMeter: 'Aspiradora', device: '2' ,value:'1200',status:'OFF'},
-  { id: 'Lavarropas', idSmartMeter: 'Lavarropas', device: '2' ,value:'875',status:'OFF'},
-  { id: 'Televisor', idSmartMeter: 'Televisor', device: '2' ,value:'120',status:'OFF'},
-  { id: 'Iluminacion', idSmartMeter: 'Iluminacion', device: '3' ,value:'1150',status:'OFF'},
-  { id: 'Motor', idSmartMeter: 'Motor', device: '3' ,value:'1140',status:'OFF'},
-  { id: 'Cortadora', idSmartMeter: 'Cortadora', device: '3' ,value:'1100',status:'OFF'}
+  { id: 'Pava', idSmartMeter: 'Pava', device: '1' ,value:'2000',status:'OFF',date: isoDay},
+  { id: 'Aire', idSmartMeter: 'Aire', device: '1' ,value:'1613',status:'OFF',date:isoDay},
+  { id: 'PC', idSmartMeter: 'PC', device: '1' ,value:'750',status:'OFF',date:isoDay},
+  { id: 'Anafe', idSmartMeter: 'Anafe', device: '1' ,value:'2351',status:'OFF',date: isoDay},
+  { id: 'Cafetera', idSmartMeter: 'Cafetera', device: '1' ,value:'903',status:'OFF',date: isoDay},
+  { id: 'Estufa', idSmartMeter: 'Estufa', device: '1' ,value:'1510',status:'OFF',date: isoDay},
+  { id: 'Freezer', idSmartMeter: 'Freezer', device: '1' ,value:'252',status:'OFF',date: isoDay},
+  { id: 'Licuadora', idSmartMeter: 'Licuadora', device: '1' ,value:'602',status:'OFF',date: isoDay},
+  { id: 'Microondas', idSmartMeter: 'Microondas', device: '1' ,value:'641',status:'OFF',date: isoDay},
+  { id: 'Televisor', idSmartMeter: 'Televisor', device: '2' ,value:'123',status:'OFF',date: isoDay},
+
+  { id: 'Aspiradora', idSmartMeter: 'Aspiradora', device: '2' ,value:'1200',status:'OFF',date: isoDay},
+  { id: 'Lavarropas', idSmartMeter: 'Lavarropas', device: '2' ,value:'875',status:'OFF',date: isoDay},
+  { id: 'Plancha', idSmartMeter: 'Plancha', device: '2' ,value:'1506',status:'OFF',date: isoDay},
+  { id: 'Secarropas', idSmartMeter: 'Secarropas', device: '2' ,value:'959',status:'OFF',date: isoDay},
+  { id: 'Tostadora', idSmartMeter: 'Tostadora', device: '2' ,value:'949',status:'OFF',date: isoDay},
+  { id: 'Ventilador', idSmartMeter: 'Ventilador', device: '2' ,value:'60',status:'OFF',date: isoDay},
+  { id: 'Tele', idSmartMeter: 'Tele', device: '2' ,value:'124',status:'OFF',date: isoDay},
+  { id: 'Notebook', idSmartMeter: 'Notebook', device: '2' ,value:'30',status:'OFF',date: isoDay},
+
+  { id: 'Iluminacion', idSmartMeter: 'Iluminacion', device: '3' ,value:'1150',status:'OFF',date: isoDay},
+  { id: 'Motor', idSmartMeter: 'Motor', device: '3' ,value:'1140',status:'OFF',date: isoDay},
+  { id: 'Cortadora', idSmartMeter: 'Cortadora', device: '3' ,value:'1100',status:'OFF',date: isoDay},
+
 ]
 
 class LedsDashboard extends React.Component {
@@ -62,6 +79,25 @@ class LedsDashboard extends React.Component {
     });
   }
 
+  getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
+
+  createTransactions = () => {
+    electro.forEach(element => {
+      let con = "net.biz.smartMeterNetwork.Consume#" + element.id
+      let date = isoDay
+      let num = getRandomInt(10,200)
+      for(let i; i < num ; i++){
+        date.setHours(date.getHours()+ getRandomInt(1,5));
+        RestLeds.postBlockchainTransaction(con,"ON",date).then(json => {
+          date.setHours(date.getHours()+ getRandomInt(1,5));
+          RestLeds.postBlockchainTransaction(con,"OFF",date)
+     });
+    }
+   });
+  }
+
   handleCallback = (status, event) => {
     let estado = status
     let nrocasa = event.value
@@ -69,7 +105,10 @@ class LedsDashboard extends React.Component {
     let electro = event.name
     let consumeTot = 0
     let onOff
-
+    let timeElapsed = Date.now();
+let today = new Date(timeElapsed);
+let now = today.toISOString();
+    let date = now
     if(estado)
       onOff = "ON"
     else
@@ -81,7 +120,7 @@ class LedsDashboard extends React.Component {
     }
 
     let con = "net.biz.smartMeterNetwork.Consume#" + electro
-    RestLeds.postBlockchainTransaction(con,onOff);
+    RestLeds.postBlockchainTransaction(con,onOff,date);
 
     if (estado === true) {
       consumeTot = this.state.energyTot + parseInt(consumo)
