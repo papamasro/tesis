@@ -27,7 +27,7 @@ import RestLeds from './RestLeds';
 const timeElapsed = Date.now();
 const today = new Date(timeElapsed);
 const todayYearAgo = today.setMonth(today.getMonth() - 12);
-const isoDay = todayYearAgo.toISOString();
+const isoDay = todayYearAgo.toString
 
 const electro = [
   { id: 'Pava', idSmartMeter: 'Pava', device: '1' ,value:'2000',status:'OFF',date: isoDay},
@@ -79,7 +79,7 @@ class LedsDashboard extends React.Component {
     });
   }
 
-  getRandomInt(min, max) {
+  getRandomInt = (min, max)  => {
     return Math.floor(Math.random() * (max - min)) + min;
   }
 
@@ -87,11 +87,11 @@ class LedsDashboard extends React.Component {
     electro.forEach(element => {
       let con = "net.biz.smartMeterNetwork.Consume#" + element.id
       let date = isoDay
-      let num = getRandomInt(10,200)
+      let num = this.getRandomInt(10,200)
       for(let i; i < num ; i++){
-        date.setHours(date.getHours()+ getRandomInt(1,5));
+        date.setHours(date.getHours()+ this.getRandomInt(1,5));
         RestLeds.postBlockchainTransaction(con,"ON",date).then(json => {
-          date.setHours(date.getHours()+ getRandomInt(1,5));
+          date.setHours(date.getHours()+ this.getRandomInt(1,5));
           RestLeds.postBlockchainTransaction(con,"OFF",date)
      });
     }
