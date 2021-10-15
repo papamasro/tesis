@@ -27,7 +27,7 @@ import RestLeds from './RestLeds';
 const timeElapsed = Date.now();
 const today = new Date(timeElapsed);
 const todayYearAgo = today.setMonth(today.getMonth() - 12);
-const isoDay = todayYearAgo.toString
+const isoDay = todayYearAgo.toString();
 
 const electro = [
   { id: 'Pava', idSmartMeter: 'Pava', device: '1' ,value:'2000',status:'OFF',date: isoDay},
