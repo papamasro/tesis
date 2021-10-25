@@ -86,15 +86,16 @@ class LedsDashboard extends React.Component {
   createTransactions = () => {
     electro.forEach(element => {
       let con = "net.biz.smartMeterNetwork.Consume#" + element.id
-      let date = isoDay
+      let date = new Date(isoDay);
       let num = this.getRandomInt(10,200)
-      for(let i; i < num ; i++){
+      console.log(con,"ON",date)
+   //   for(let i = 0; i < num ; i++){
         date.setHours(date.getHours()+ this.getRandomInt(1,5));
         RestLeds.postBlockchainTransaction(con,"ON",date).then(json => {
-          date.setHours(date.getHours()+ this.getRandomInt(1,5));
+          date.setHours(date.getHours()+ this.getRandomInt(1,5)).toString();
           RestLeds.postBlockchainTransaction(con,"OFF",date)
      });
-    }
+ //   }
    });
   }
 
@@ -280,6 +281,8 @@ let now = today.toISOString();
           </Card.Group>
         </Segment>
         <Button  onClick={this.loadAssets} positive>Cargar BD</Button>
+        <Button  onClick={this.createTransactions} positive>Cargar Transactions</Button>
+
       </Segment>
     );
   }

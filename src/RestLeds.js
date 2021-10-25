@@ -32,7 +32,7 @@ class RestLeds {
 
   static postBlockchainTransaction(consumo,state,date) {
     console.log(consumo,state, "eee")
-    axios({
+   return axios({
       method: 'post',
       url: this.ENDPOINT_BLOCKCHAIN + this.GRABAR_BLOCKCHAIN ,
       headers: {}, 
