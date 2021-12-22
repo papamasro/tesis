@@ -79,6 +79,31 @@ class LedsDashboard extends React.Component {
     });
   }
 
+  sendEmail = ()  => {
+    RestLeds.sendemail()
+  }
+
+  sendEmailcons = ()  => {
+    RestLeds.sendemailcons()
+  }
+
+  corteLuz = ()  => {
+    RestLeds.sendemail()
+    let date = new Date(isoDay);
+    electro.forEach(element => {
+    let con = "net.biz.smartMeterNetwork.Consume#" + element.id
+    RestLeds.postBlockchainTransaction(con,"OFF",Date.now().toString()).then(json => {
+      RestLeds.raspberry("0").then(json => {
+        console.log("Se envio a la raspbery corte luz")
+      });
+
+     });
+
+  })
+
+  }
+
+
   getRandomInt = (min, max)  => {
     return Math.floor(Math.random() * (max - min)) + min;
   }
@@ -167,10 +192,15 @@ let now = today.toISOString();
       firstNum = num.charAt(0)
     }
     console.log(firstNum)
+    if(firstNum == "9"){
+      this.sendEmailcons()
+    }
     RestLeds.raspberry(firstNum).then(json => {
       console.log("Se envio a la raspbery" + firstNum)
     });
   }
+
+
 
 
   render() {
@@ -280,8 +310,9 @@ let now = today.toISOString();
             </Card>
           </Card.Group>
         </Segment>
-        <Button  onClick={this.loadAssets} positive>Cargar BD</Button>
-        <Button  onClick={this.createTransactions} positive>Cargar Transactions</Button>
+        {/*
+       <Button  onClick={this.loadAssets} positive>Cargar BD</Button> */}
+        <Button  onClick={this.corteLuz} negative>Corte de luz</Button>
 
       </Segment>
     );

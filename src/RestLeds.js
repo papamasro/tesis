@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 class RestLeds {
-  static ENDPOINT_RASPBERRY = 'http://192.168.0.135:5000/';
+  static ENDPOINT_RASPBERRY = 'http://192.168.43.9:5000/';
   static PRENDER_ELECTRODOMESTICO_RASPBERRY = 'number/';
 
   static ENDPOINT_BLOCKCHAIN = 'http://localhost:3000/api/';
@@ -39,6 +39,24 @@ class RestLeds {
       data: {consume:consumo, estado:state,date:date}
     });
   }
+
+  static sendemail() {
+   return axios({
+      method: 'get',
+      url: "http://localhost:4200/api/metrics/emailalert/" ,
+      headers: {}, 
+    });
+  }
+
+
+  static sendemailcons() {
+    return axios({
+       method: 'get',
+       url: "http://localhost:4200/api/metrics/emailalertcons/" ,
+       headers: {}, 
+     });
+   }
+  
 
 
 }
